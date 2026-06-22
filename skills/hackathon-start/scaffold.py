@@ -5,6 +5,9 @@ so a participant's work lands where the submit skill will auto-collect it.
 Idempotent: never overwrites an existing file (use --force to replace). Templates
 are deliberately light — section headers and prompts, no answers.
 
+Also persists SCOREBOARD_URL into your shell profile so submit-to-scoreboard can
+reach the live scoreboard server (re-running updates the value; --no-env skips it).
+
 Usage:
     python scaffold.py                 # scaffold in the current directory
     python scaffold.py --dir <path>    # scaffold elsewhere
@@ -14,7 +17,12 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 from pathlib import Path
+
+# The live scoreboard server. submit-to-scoreboard reads this from SCOREBOARD_URL;
+# a facilitator updates it here (and re-runs scaffold) if the host changes.
+SCOREBOARD_URL = "http://3.217.126.145"
 
 # relative path -> template body. Paths match submit-to-scoreboard discovery.
 TEMPLATES = {
@@ -81,10 +89,53 @@ _Why did one run find more than the other?_
 }
 
 
+def _shell_profile() -> Path:
+    """Best-guess shell rc for the current user (the file the login shell sources)."""
+    home = Path.home()
+    shell = os.environ.get("SHELL", "")
+    if "zsh" in shell:
+        return home / ".zshrc"
+    if "bash" in shell:
+        return home / ".bashrc"
+    return home / ".profile"
+
+
+def ensure_scoreboard_env() -> str:
+    """Persist `export SCOREBOARD_URL=...` in the user's shell profile so the value
+    is present in new terminals and in Claude Code's profile-initialized shell.
+
+    Idempotent: updates the line in place if it already exists (e.g. the host
+    changed), appends it if absent, and no-ops if it's already correct. Returns a
+    short status string for the run summary.
+    """
+    # Make it available to anything this process spawns right now, too.
+    os.environ["SCOREBOARD_URL"] = SCOREBOARD_URL
+
+    line = f"export SCOREBOARD_URL={SCOREBOARD_URL}"
+    profile = _shell_profile()
+    existing = profile.read_text(encoding="utf-8") if profile.exists() else ""
+    pattern = re.compile(r"^export SCOREBOARD_URL=.*$", re.M)
+
+    if pattern.search(existing):
+        updated = pattern.sub(line, existing)
+        if updated == existing:
+            return f"kept     SCOREBOARD_URL in {profile} (already current)"
+        profile.write_text(updated, encoding="utf-8")
+        return f"updated  SCOREBOARD_URL in {profile}"
+
+    sep = "" if existing == "" or existing.endswith("\n") else "\n"
+    block = f"{sep}\n# Wiz hackathon scoreboard\n{line}\n"
+    with profile.open("a", encoding="utf-8") as fh:
+        fh.write(block)
+    return f"added    SCOREBOARD_URL to {profile}"
+
+
 def main():
     ap = argparse.ArgumentParser(description="Scaffold hackathon artifact templates.")
     ap.add_argument("--dir", default=".", help="project root (default: cwd)")
     ap.add_argument("--force", action="store_true", help="overwrite existing files")
+    ap.add_argument("--no-env", action="store_true",
+                    help="skip persisting SCOREBOARD_URL to your shell profile")
     args = ap.parse_args()
 
     root = Path(args.dir).expanduser().resolve()
@@ -103,6 +154,11 @@ def main():
         print(f"  created  {rel}")
     for rel in skipped:
         print(f"  kept     {rel}  (already exists — left your work alone)")
+
+    if not args.no_env:
+        print(f"  {ensure_scoreboard_env()}")
+        print("  (open a new terminal — or just submit via Claude — to pick it up)")
+
     if skipped and not args.force:
         print("\nExisting files were left untouched. Re-run with --force to reset them.")
 
