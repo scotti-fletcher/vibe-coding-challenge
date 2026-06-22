@@ -1,11 +1,11 @@
 ---
 name: submit-to-scoreboard
-description: Find this team's Wiz hackathon artifacts (skill, Juice Shop findings, customer insight, website) and Claude Code session logs, then upload them to the scoreboard against the team name. Use when the user says "submit my work", "upload to the scoreboard", "submit my challenge results", or similar.
+description: Find this team's hackathon artifacts (skill, Juice Shop findings, customer insight, website) and Claude Code session logs, then upload them to the scoreboard against the team name. Use when the user says "submit my work", "upload to the scoreboard", "submit my challenge results", or similar.
 ---
 
 # Submit to the hackathon scoreboard
 
-This skill collects the files a team produced during the Wiz SE AI CLI hackathon
+This skill collects the files a team produced during the SE AI CLI hackathon
 and uploads them to the scoreboard server. A helper script does the file
 discovery and the upload; your job is to run it, interpret what it found, and
 fill any gaps by asking the user.
@@ -19,7 +19,7 @@ that absolute path. It uses only the Python standard library.
 |------------|-----------------------------------------------------|
 | `skill`    | The Card 3 customer-summary slash command (`.md`)   |
 | `findings` | Card 5 — security review findings (OWASP Juice Shop)|
-| `insight`  | Card 4 — customer-facing insight from Wiz MCP data  |
+| `insight`  | Card 4 — customer-facing insight from live MCP data |
 | `website`  | Card 6 — the single-page site (`index.html`)        |
 | `logs`     | Claude Code session logs (`~/.claude/projects/...`) |
 
@@ -65,14 +65,19 @@ are scored — always try to include them.
 6. **Confirm the result.** The script prints `http_status` and the uploaded
    files. Tell the user: which artifacts were uploaded, anything still missing,
    and that they can re-run anytime to update (re-submitting overwrites their
-   previous upload under the same team name). On the board their entry shows as
-   the first two letters of the team name only.
+   previous upload under the same team name). Submissions are collected now and
+   scored offline by the facilitator after the round — there is no live
+   leaderboard, so nothing is revealed to other teams at submit time.
 
 ## Configuration
 
-- Server URL comes from `SCOREBOARD_URL` (default `http://localhost:5000`). If
-  the upload fails with a connection error, confirm the server URL with the user
-  and re-run with `--server https://<host>`.
+- Server URL comes from `SCOREBOARD_URL` (default `http://localhost:5000`). The
+  facilitator sets this to the live scoreboard URL on team workstations before
+  the lab starts, so the skill "just works". If the upload fails with a
+  connection error, the env var is likely unset or stale — confirm the current
+  server URL with the user and re-run with `--server http://<host>`.
+- No auth is needed to submit: `/submit` is public. The admin token only gates
+  the facilitator's bundle download, which teams never touch.
 
 ## Guardrails
 
