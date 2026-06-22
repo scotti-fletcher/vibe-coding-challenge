@@ -84,7 +84,8 @@ warm-ups (scored from your session log), 3–6 produce something you submit.
 - **Hint:** The Wiz tools (`mcp__wiz__*`) are already wired up. Just ask for the data;
   the AI makes the call for you.
 - **Bonus:** Hand the results to a subagent for analysis, then wrap the flow in a skill.
-- **Done when:** live Wiz data lands in your session. *(Submit the insight you write from it.)*
+- **Done when:** live Wiz data lands in your session. **Write it up and save it as
+  `insight.md`** in your project folder so it's auto-collected at submit time.
 
 ### Card 5 — Security Review Showdown · *Advanced · everything*
 - **Task:** Point an AI security review at **OWASP Juice Shop** (cloned to `./juice-shop`
@@ -93,7 +94,8 @@ warm-ups (scored from your session log), 3–6 produce something you submit.
 - **Hint:** Juice Shop is "obvious" on purpose — the variable is *you*. Try route-by-route
   subagents and feeding only the relevant files. Same tool, different results.
 - **Bonus:** Turn your best approach into a reusable `/security-review` skill.
-- **Done when:** you can show two runs and explain why one found more. *(Submit the findings.)*
+- **Done when:** you can show two runs and explain why one found more. **Save your
+  findings as `findings.md`** in your project folder so it's auto-collected.
 
 ### Card 6 — Vibe-Code a Site · *Creative · design*
 - **Task:** Build a single-page site (a vuln dashboard or "security posture" page) by
@@ -101,14 +103,28 @@ warm-ups (scored from your session log), 3–6 produce something you submit.
 - **Hint:** Describe the *vibe*, not the CSS. Then refine: "make it darker, add a Wiz-style
   hero, tighten the spacing." Feed it real Wiz MCP data for bonus realism.
 - **Bonus:** Theme it for a specific customer.
-- **Done when:** a styled page renders in the browser. *(Submit the index.html.)*
+- **Done when:** a styled page renders in the browser. **Save it as `site/index.html`**
+  in your project folder so it's auto-collected.
 
 ## Step 4 — Submitting
 
 When you've done what you can, submit. Just say **"submit my work"** — the
-`submit-to-scoreboard` skill finds your artifacts (skill, insight, findings, website)
-and your session logs and uploads them under your team name. If it can't find a file,
-it'll ask you where it is.
+`submit-to-scoreboard` skill finds your artifacts and session logs and uploads them
+under your team name. If it can't find a file, it'll ask you where it is.
+
+**Save your work with these names/locations so it's auto-collected** (work in one
+project folder for the whole lab):
+
+| Card | Save as |
+|------|---------|
+| 3 — Skill | `.claude/skills/<name>/SKILL.md` |
+| 4 — Insight | `insight.md` |
+| 5 — Findings | `findings.md` |
+| 6 — Website | `site/index.html` (a single `index.html` also works) |
+| Session logs | picked up automatically from `~/.claude/projects/` |
+
+If you named something differently, no problem — the submit skill will ask for the
+path.
 
 ## How you're scored (so you know what to aim for)
 
