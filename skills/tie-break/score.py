@@ -75,8 +75,9 @@ def main():
     ap.add_argument("--session", help="explicit path to a session .jsonl")
     ap.add_argument("--all-tokens", action="store_true",
                     help="include cached-read baseline in the total")
-    ap.add_argument("--answer", help="record this recovered phrase + token cost to "
-                    "tiebreak.json (the artifact the scoreboard reads for the award)")
+    ap.add_argument("--answer", help="score this attempt and keep your BEST run in "
+                    "tiebreak.json (fewest tokens among correct attempts) — the "
+                    "artifact the scoreboard reads for the award")
     ap.add_argument("--phrase-id", type=int, default=0,
                     help="which hidden phrase the answer is checked against (default 0)")
     ap.add_argument("--out", default="tiebreak.json",
@@ -130,13 +131,41 @@ def main():
     if args.answer is not None:
         expected = base64.b64decode(_PHRASES_B64[args.phrase_id]).decode()
         solved = _normalize(args.answer) == _normalize(expected)
-        artifact = {"solved": solved, "tokens": new_tokens,
-                    "phrase_id": args.phrase_id, "marker": "tiebreak"}
-        Path(args.out).write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8")
+
+        out = Path(args.out)
+        prev = None
+        if out.exists():
+            try:
+                prev = json.loads(out.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                prev = None
+        prev = prev if isinstance(prev, dict) else None
+        attempts = (prev.get("attempts", 1) + 1) if prev else 1
+
+        # this attempt is a new best only if it RECOVERED the phrase and either
+        # nothing better is stored yet, or it used fewer tokens than the stored best.
+        improved = solved and (
+            prev is None
+            or not prev.get("solved")
+            or new_tokens < prev.get("tokens", float("inf"))
+        )
+        if improved or prev is None:
+            best = {"solved": solved, "tokens": new_tokens, "phrase_id": args.phrase_id}
+        else:
+            best = {"solved": bool(prev.get("solved")), "tokens": prev.get("tokens"),
+                    "phrase_id": prev.get("phrase_id", args.phrase_id)}
+        best["attempts"] = attempts
+        best["marker"] = "tiebreak"
+        out.write_text(json.dumps(best, indent=2) + "\n", encoding="utf-8")
+
         print("-" * 40)
-        print(f"Wrote {args.out}: solved={solved}, tokens={new_tokens}")
-        if not solved:
-            print("(solved=false — recover the correct phrase before this counts.)")
+        print(f"Attempt #{attempts}: solved={solved}, tokens={new_tokens}")
+        if improved:
+            print(f"🏆 New best — {new_tokens} tokens. Saved to {args.out}.")
+        elif best.get("solved"):
+            print(f"Kept your best: {best['tokens']} tokens (this run didn't beat it).")
+        else:
+            print(f"Not solved yet — recover the correct phrase, then keep golfing.")
 
 
 if __name__ == "__main__":

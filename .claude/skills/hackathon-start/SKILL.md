@@ -142,6 +142,17 @@ warm-ups (scored from your session log), 3–6 produce something you submit.
 - **Done when:** a styled page renders in the browser. **Save it as `site/index.html`**
   in your project folder so it's auto-collected.
 
+### Bonus Card — Prompt Golf · *Anyone · efficiency*
+- **Task:** A *Wizard of Oz* phrase is scattered one word per file across a fake
+  codebase. Recover the **whole phrase** in the **fewest tokens**. Run it with the
+  `tie-break` skill ("start the prompt golf challenge").
+- **Hint:** `/clear` first, then **one** prompt per attempt. Push the work to the
+  shell — `grep | sort | join` beats reading every file. Run as many attempts as you
+  like; only your best (fewest-token correct) run counts.
+- **Done when:** you've recovered the phrase. **Run `score.py --answer "<phrase>"`**
+  to save your best run to `tiebreak.json` — it's auto-collected and feeds the
+  standalone **Tie-break Champion** award. *(Submit this.)*
+
 ## Step 4 — Submitting
 
 When you've done what you can, submit. Just say **"submit my work"** — the
@@ -157,6 +168,7 @@ project folder for the whole lab):
 | 4 — Insight | `insight.md` |
 | 5 — Findings | `findings.md` |
 | 6 — Website | `site/index.html` (a single `index.html` also works) |
+| Bonus — Prompt Golf | `tiebreak.json` (written by `score.py --answer`) |
 | Session logs | picked up automatically from `~/.claude/projects/` |
 
 If you named something differently, no problem — the submit skill will ask for the
@@ -166,8 +178,8 @@ path.
 
 Points reward **demonstrated technique, not polish** — a clean beginner can out-score
 a brute-forcer. Used a subagent? Called the Wiz MCP? Built a reusable skill? Kept your
-context lean? That's what counts. Three awards run alongside the total: **Most Efficient**,
-**Best Skill**, **Best SE Workflow**.
+context lean? That's what counts. Awards run alongside the total: **Most Efficient**,
+**Best Skill**, **Best SE Workflow**, and **Tie-break Champion** (the Prompt Golf bonus).
 
 ## Your job as guide
 

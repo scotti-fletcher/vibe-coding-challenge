@@ -1,78 +1,78 @@
 ---
 name: tie-break
-description: Run the hackathon tie-break — a one-shot prompt-golf challenge. Plant a hidden phrase scattered across a fake codebase, then have the participant recover it in a single attempt using the fewest tokens. Use when the user says "tie-break", "start the tie break", "run the tiebreaker", or "prompt golf", or when facilitators need to break a scoreboard tie.
+description: Run the Prompt Golf bonus challenge — recover a phrase hidden across a fake codebase using the fewest tokens. Everyone plays; run as many attempts as you like and your best (fewest-token correct) run is captured to tiebreak.json and submitted. Use when the user says "prompt golf", "tie-break", "start the prompt golf challenge", "golf challenge", or similar.
 ---
 
-# Tie-break — Prompt Golf 🏌️
+# Prompt Golf 🏌️ — bonus challenge
 
-A sudden-death efficiency duel. A hidden phrase (a line from *The Wizard of Oz*)
-is scattered, one word per file, across a small fake codebase. The participant
-gets **one shot** to recover the full phrase — and is ranked on **fewest tokens**.
-Precise search wins; stuffing the repo into context loses.
+A hidden phrase (a line from *The Wizard of Oz*) is scattered, one word per file,
+across a small fake codebase. Recover the **whole phrase** using the **fewest
+tokens**. Everyone plays, **run as many attempts as you like**, and your best
+correct run is what counts. Precise search wins; stuffing the repo into context
+loses.
 
-## ⚠️ Administer this — do NOT solve it
+## ⚠️ Setting up — don't reveal the answer
 
-When this skill runs, your ONLY job is to set up the challenge and explain the
-rules. **Do not** search for the phrase, **do not** read `tie-break-vault/`, and
-**do not** open `planter.py`. Seeing the answer would poison the attempt. Plant,
-brief, stop.
+When this skill runs, your job is to set up the challenge and explain the rules —
+**not** to solve it. **Do not** search for the phrase, read `tie-break-vault/`, or
+open `planter.py`. Seeing the answer would poison the player's attempts. Plant,
+brief, hand over.
 
 ## Step 1 — Plant the flag (quietly)
 
 Run the planter as a black box from the skill directory (it prints a count, never
-the phrase). Use the project root as `--dir`:
+the phrase):
 
 ```bash
 python <skill-dir>/planter.py --dir "$(pwd)" --quiet
 ```
 
-- Default phrase id is `0`. A facilitator can vary it with `--phrase-id 0|1|2`.
+- Default phrase id is `0`; everyone should use the **same** `--phrase-id` for a fair race.
 - Harder variant: add `--rot13` (words are rot13-encoded; the solver must decode).
-- Re-running replants cleanly; `--clean` removes the vault afterwards.
+- Re-running replants cleanly; `--clean` removes the vault.
 
 Do not read the files it creates.
 
-## Step 2 — Brief the rules, then hand over
+## Step 2 — Play: many attempts, keep your best
 
-Tell the participant, then **stop and let them drive**:
+Tell the player the rules, then **let them drive**:
 
 > **The rules**
-> 1. **Clear your context now** — run `/clear`. Your attempt must start clean.
-> 2. **One shot.** A single prompt. The model must actually *find* the phrase
->    (the session log proves it) — no pasting an answer you read yourself.
-> 3. **Fewest tokens wins.** Push the work to the shell; keep context lean.
-> 4. The phrase is a *Wizard of Oz* line, scattered one word per file under
->    `tie-break-vault/` behind the marker `OZFLAG:<index>:<word>`. Decoys under a
->    different marker are there to punish loose patterns. Order by index.
+> 1. **Each attempt starts clean** — run `/clear`, then a single prompt to recover
+>    the phrase.
+> 2. **Fewest tokens wins.** Push the work to the shell; keep context lean.
+> 3. **Unlimited attempts.** Refine your prompt, `/clear`, try again — only your
+>    best correct run is kept.
+> 4. The phrase is a *Wizard of Oz* line, one word per file under
+>    `tie-break-vault/`, behind the marker `OZFLAG:<index>:<word>`. Decoys wear a
+>    different marker to punish loose patterns. Order by index.
 
-That's the whole brief. The elegant solutions are usually one `grep | sort | join`
-pipeline — but discovering that is *their* job, not yours.
+The elegant solutions are usually one `grep | sort | join` pipeline — but
+discovering that is *their* job, not yours.
 
-## Step 3 — Verify, score & record (after their shot)
+## Step 3 — Score each attempt (keeps your best)
 
-Plain commands the participant runs after their one attempt (this does not need to
-count against the score):
+After **each** attempt, in a **separate terminal** (so scoring doesn't add tokens
+to the attempt you're measuring):
 
 ```bash
-python <skill-dir>/verify.py "<their recovered phrase>"             # quick PASS/FAIL (+ reveals the reference solution)
-python <skill-dir>/score.py --answer "<their recovered phrase>"     # token cost AND writes tiebreak.json
+python <skill-dir>/verify.py "<your recovered phrase>"             # quick PASS/FAIL (+ reveals the reference solution)
+python <skill-dir>/score.py --answer "<your recovered phrase>"     # scores it and keeps your best in tiebreak.json
 ```
 
-`score.py` reads the session log and reports **attempt cost (new tokens)** — prompt
-+ context growth + output, excluding the fixed cached baseline. **Lower wins.** With
-`--answer` it also writes **`tiebreak.json`** (`{solved, tokens, phrase_id}`) into the
-project — that's the artifact the scoreboard reads for the **Tie-break Champion**
-award (correct phrase, fewest tokens). Pass `--phrase-id N` if the facilitator used a
-non-default phrase. (No log? `/context` in Claude Code shows the count too.)
+`score.py --answer` reports the attempt's **new-token** cost and updates
+**`tiebreak.json`** (`{solved, tokens, phrase_id, attempts}`) only when this run
+beats your stored best (fewest tokens among correct attempts). Loop: tweak the
+prompt → `/clear` → attempt → score. Pass `--phrase-id N` if a non-default phrase
+was planted.
 
-`tiebreak.json` is collected by `submit-to-scoreboard` like any other artifact, so a
-normal "submit my work" picks it up. The award is **standalone** — it never changes
-the main leaderboard math.
+`tiebreak.json` is collected by `submit-to-scoreboard` on a normal "submit my
+work", and feeds the **Tie-break Champion** award (fewest tokens among teams that
+solved it). The award is **standalone** — it never changes the main leaderboard.
 
-## Facilitator notes
+## Notes
 
-- Keep everyone on the **same `--phrase-id`** (and same `--rot13` setting) for a fair race.
-- For a clean room, plant from a **separate terminal** before participants start,
-  so nothing touches their attempt session.
+- Run `verify.py` / `score.py` in a side terminal, **not** through the AI, so they
+  don't count toward the attempt you're scoring.
 - This skill's folder is excluded from scoreboard artifact collection — it won't be
-  mistaken for a participant's Card 3 skill.
+  mistaken for a team's Card 3 skill.
