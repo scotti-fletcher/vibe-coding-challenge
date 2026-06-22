@@ -44,6 +44,7 @@ ARTIFACTS = {
                   "**/*briefing*.md"], ["insight"]),
     "website":  (["index.html", "site/index.html", "**/site/index.html",
                   "**/index.html"], ["site", "posture", "dashboard"]),
+    "tiebreak": (["tiebreak.json", "**/tiebreak.json"], ["tiebreak"]),
 }
 
 
@@ -152,7 +153,7 @@ def build_multipart(team: str, found: dict):
     body = bytearray()
     body += (f"--{boundary}\r\n"
              f'Content-Disposition: form-data; name="team"\r\n\r\n{team}\r\n').encode()
-    for field in ("skill", "findings", "insight", "website"):
+    for field in ("skill", "findings", "insight", "website", "tiebreak"):
         path = found.get(field)
         if path:
             p = Path(path)

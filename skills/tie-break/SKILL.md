@@ -48,20 +48,26 @@ Tell the participant, then **stop and let them drive**:
 That's the whole brief. The elegant solutions are usually one `grep | sort | join`
 pipeline — but discovering that is *their* job, not yours.
 
-## Step 3 — Verify & score (after their shot)
+## Step 3 — Verify, score & record (after their shot)
 
-These are plain commands the participant runs after their one attempt (verifying
-does not need to count against the score):
+Plain commands the participant runs after their one attempt (this does not need to
+count against the score):
 
 ```bash
-python <skill-dir>/verify.py "<their recovered phrase>"   # PASS/FAIL (+ reveals the reference solution)
-python <skill-dir>/score.py                               # token cost of the attempt
+python <skill-dir>/verify.py "<their recovered phrase>"             # quick PASS/FAIL (+ reveals the reference solution)
+python <skill-dir>/score.py --answer "<their recovered phrase>"     # token cost AND writes tiebreak.json
 ```
 
 `score.py` reads the session log and reports **attempt cost (new tokens)** — prompt
-+ context growth + output, excluding the fixed cached baseline. **Lower wins.**
-Record PASS/FAIL and the token number; lowest tokens among correct answers takes
-the tie. (No log? `/context` in Claude Code shows the count too.)
++ context growth + output, excluding the fixed cached baseline. **Lower wins.** With
+`--answer` it also writes **`tiebreak.json`** (`{solved, tokens, phrase_id}`) into the
+project — that's the artifact the scoreboard reads for the **Tie-break Champion**
+award (correct phrase, fewest tokens). Pass `--phrase-id N` if the facilitator used a
+non-default phrase. (No log? `/context` in Claude Code shows the count too.)
+
+`tiebreak.json` is collected by `submit-to-scoreboard` like any other artifact, so a
+normal "submit my work" picks it up. The award is **standalone** — it never changes
+the main leaderboard math.
 
 ## Facilitator notes
 
