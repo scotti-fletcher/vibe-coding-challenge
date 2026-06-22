@@ -70,8 +70,11 @@ warm-ups (scored from your session log), 3–6 produce something you submit.
 - **Task:** Create a reusable **Skill** that gives a **customer-ready summary** of any
   code file (what it does, why it matters, security implications). Test it on 2–3 files.
 - **Hint:** Save your best prompt as a Skill — a folder `.claude/skills/<name>/SKILL.md`
-  with a short `description` in the frontmatter. Then type `/<name>`, or let the AI load
-  it automatically when it fits the task. Write it once, reuse forever.
+  with a short `description` in the frontmatter. To test it without leaving your open
+  session, just **ask the AI to run your skill** (e.g. "use the customer-summary skill
+  on `src/auth.py`"). Typing `/<name>` works too — both are valid; a freshly created
+  skill may only show up as `/<name>` after the session reloads, but asking for it by
+  name works right away. Write it once, reuse forever.
 - **Bonus:** Make it take an **audience** parameter (technical vs. executive).
 - **Done when:** it runs cleanly on a file you didn't build it for. *(Submit this.)*
 
