@@ -33,6 +33,19 @@ You only need the **source code** for the AI security review — you do **not** 
 to `npm install` or run the app unless you want to. If the clone fails (network /
 proxy), flag a facilitator; you can still do Cards 1–4 and 6 without it.
 
+Then scaffold the artifact templates so your work lands where the submit skill
+expects it. Run `scaffold.py` (next to this SKILL.md — use its absolute path):
+
+```bash
+python /absolute/path/to/scaffold.py --dir "$(pwd)"
+```
+
+This drops light starter files in the right places — `insight.md` (Card 4),
+`findings.md` (Card 5), `site/index.html` (Card 6), and
+`.claude/skills/customer-summary/SKILL.md` (Card 3). They're just headers and
+prompts, not answers — fill them in as you go. It **won't overwrite** anything you've
+already written, so it's safe to run once at the start.
+
 ## Step 2 — Pre-flight (~1 min)
 
 Confirm two things before the clock matters:
