@@ -27,9 +27,9 @@ PRUNE_DIRS = {".git", "node_modules", ".venv", "venv", "dist", "build",
               "__pycache__", ".next", ".cache", "site-packages"}
 MAX_LOGS = 5  # most-recent session logs to send
 
-# the two scaffolding skills shipped with the hackathon repo — never submit these
+# the scaffolding skills shipped with the hackathon repo — never submit these
 # as a team's Card 3 Skill.
-SKILL_EXCLUDE = ("/hackathon-start/", "/submit-to-scoreboard/")
+SKILL_EXCLUDE = ("/hackathon-start/", "/submit-to-scoreboard/", "/tie-break/")
 
 # label -> (glob patterns, substrings that make a match preferred)
 # Card 3 is now a Skill at .claude/skills/<name>/SKILL.md (the current standard);
