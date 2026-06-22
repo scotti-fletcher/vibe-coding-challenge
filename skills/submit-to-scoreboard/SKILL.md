@@ -17,7 +17,7 @@ that absolute path. It uses only the Python standard library.
 
 | Artifact   | What it is                                          |
 |------------|-----------------------------------------------------|
-| `skill`    | The Card 3 customer-summary slash command (`.md`)   |
+| `skill`    | The Card 3 customer-summary Skill (`.claude/skills/<name>/SKILL.md`) |
 | `findings` | Card 5 — security review findings (OWASP Juice Shop)|
 | `insight`  | Card 4 — customer-facing insight from live MCP data |
 | `website`  | Card 6 — the single-page site (`index.html`)        |

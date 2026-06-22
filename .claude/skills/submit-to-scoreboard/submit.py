@@ -27,10 +27,16 @@ PRUNE_DIRS = {".git", "node_modules", ".venv", "venv", "dist", "build",
               "__pycache__", ".next", ".cache", "site-packages"}
 MAX_LOGS = 5  # most-recent session logs to send
 
+# the two scaffolding skills shipped with the hackathon repo — never submit these
+# as a team's Card 3 Skill.
+SKILL_EXCLUDE = ("/hackathon-start/", "/submit-to-scoreboard/")
+
 # label -> (glob patterns, substrings that make a match preferred)
+# Card 3 is now a Skill at .claude/skills/<name>/SKILL.md (the current standard);
+# legacy .claude/commands/*.md still works and is kept as a fallback.
 ARTIFACTS = {
-    "skill":    ([".claude/commands/*.md", ".claude/commands/**/*.md",
-                  ".claude/skills/*/SKILL.md", "**/*summary*.md"],
+    "skill":    ([".claude/skills/*/SKILL.md", ".claude/commands/*.md",
+                  ".claude/commands/**/*.md", "**/*summary*.md"],
                  ["customer", "summary"]),
     "findings": (["**/*finding*.md", "**/*juice*.md", "**/security*review*.md",
                   "**/*vuln*.md"], ["juice", "finding"]),
@@ -48,10 +54,13 @@ def _iter_files(root: Path):
             yield Path(dirpath) / fn
 
 
-def find_artifact(root: Path, patterns, prefer) -> Path | None:
+def find_artifact(root: Path, patterns, prefer, exclude=()) -> Path | None:
     matches: list[Path] = []
     for pat in patterns:
         matches.extend(p for p in root.glob(pat) if p.is_file())
+    if exclude:
+        matches = [p for p in matches
+                   if not any(x in (str(p) + "/") for x in exclude)]
     if not matches:
         return None
     # dedupe, prefer files whose path hints at the right thing, then shallowest
@@ -109,7 +118,8 @@ def discover(cwd: Path, overrides: dict) -> dict:
             else:
                 missing.append(label)
             continue
-        hit = find_artifact(cwd, patterns, prefer)
+        hit = find_artifact(cwd, patterns, prefer,
+                            exclude=SKILL_EXCLUDE if label == "skill" else ())
         if hit:
             found[label] = str(hit)
         else:

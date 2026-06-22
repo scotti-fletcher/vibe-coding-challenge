@@ -67,10 +67,11 @@ warm-ups (scored from your session log), 3–6 produce something you submit.
 - **Done when:** a subagent did the searching and your main context stayed clean.
 
 ### Card 3 — Build a Skill · *Intermediate · skills*
-- **Task:** Create a reusable slash command that gives a **customer-ready summary** of
-  any code file (what it does, why it matters, security implications). Test it on 2–3 files.
-- **Hint:** Save your best prompt as a command in `.claude/commands/`. Write it once,
-  reuse forever.
+- **Task:** Create a reusable **Skill** that gives a **customer-ready summary** of any
+  code file (what it does, why it matters, security implications). Test it on 2–3 files.
+- **Hint:** Save your best prompt as a Skill — a folder `.claude/skills/<name>/SKILL.md`
+  with a short `description` in the frontmatter. Then type `/<name>`, or let the AI load
+  it automatically when it fits the task. Write it once, reuse forever.
 - **Bonus:** Make it take an **audience** parameter (technical vs. executive).
 - **Done when:** it runs cleanly on a file you didn't build it for. *(Submit this.)*
 
