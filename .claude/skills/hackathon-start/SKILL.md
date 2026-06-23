@@ -208,7 +208,7 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 - **Task:** Have you noticed any **Wiz-specific verbs or cybersecurity concepts** (like *toxic combinations*, *DSPM*, etc.) cycling in the terminal spinner while Claude is thinking? Your environment has been pre-configured with a custom Wiz theme! Find out how this was done and how to customize the "verb spinners" in Claude Code.
 - **Try:** Ask Claude: *"How do I customize the verb spinners in Claude Code? What is the JSON config and where does it go?"*
 - **Hint:** Look for the global settings file path. The configuration uses the `spinnerVerbs` key.
-- **Done when:** You have written the JSON configuration structure, the correct global file path, and listed at least 3 of the pre-added Wiz verbs you observed in **`findings.md`** under the `## Bonus: Claude Code Customization` section (scaffolded in Step 1).
+- **Done when:** You have written down **where you configure it** (the correct global settings file path) and **what the settings key is called** in **`findings.md`** under the `## Bonus: Claude Code Customization` section (scaffolded in Step 1).
 
 ## Step 4 — Submitting
 
