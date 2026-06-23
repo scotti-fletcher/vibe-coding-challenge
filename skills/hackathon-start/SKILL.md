@@ -82,65 +82,91 @@ If either fails, fix it before starting. Everything else is just typing.
 
 ## Step 3 — The six challenges
 
-Show this list. Each card teaches one idea through a real SE task. Cards 1–2 are
-warm-ups (scored from your session log), 3–6 produce something you submit.
+Each card teaches one idea through a real SE task, and every card has a **Try:** line
+— a concrete first prompt to get moving. Cards **1, 2, and 5 use the `juice-shop/`
+code you cloned in Step 1**, so `cd` into your project folder and you're ready. Cards
+1–2 are warm-ups (scored from your session log); 3–6 produce a file you submit.
+
+> Present one card at a time. The **Try:** line is a starting prompt, not the answer —
+> hand it over to get them moving, then let them drive. Save **Hint** for after a real attempt.
 
 ### Card 1 — Context is King · *Beginner · context windows*
-- **Task:** "A customer sent you this repo and asked: is it safe?" Find and fix the
-  bug by pointing the AI at the **one relevant file** — then try the vague version
-  ("find the bug in this project") and notice the difference.
-- **Hint:** Name the exact file. Narrow context beats more context — don't dump the repo.
+- **The idea:** *what* you put in the context window matters more than *how much*. Point the
+  AI at the one file that matters instead of the whole repo.
+- **Task:** Pick **one** source file in `juice-shop/` and ask the AI about *just that file*.
+  Then ask the same kind of question about the *whole project* and compare speed, focus, and
+  how much context each used. (See candidate files with `ls juice-shop/routes`.)
+- **Try:** `Is the logic in juice-shop/routes/login.ts safe? Look only at this file.`
+  …then later: `Find security bugs across this whole project.`
+- **Hint:** Name the exact file path. Narrow context beats more context — don't make the AI
+  read the repo to answer a one-file question.
 - **Bonus:** Add a `CLAUDE.md` so the AI understands the project without you re-explaining.
-- **Done when:** the bug's fixed using just the relevant file, and you can show the
-  specific-vs-broad difference.
+- **Done when:** you've reviewed one specific file and can say how that differed from asking
+  about the whole repo.
 
 ### Card 2 — Scout, Don't Stuff · *Intermediate · subagents*
-- **Task:** Send a **subagent** to do the heavy digging ("which file holds the flaw,
-  and why?") so only the summary comes back to your main thread. Then fix it.
-- **Hint:** Ask the AI to *"use a subagent to investigate…"*. The whole point is what
-  does **not** end up in your main context.
-- **Bonus:** Fan out parallel subagents across several leads.
-- **Done when:** a subagent did the searching and your main context stayed clean.
+- **The idea:** delegate the noisy searching to a **subagent** so only its summary lands in
+  your main chat — your context stays clean for the real work.
+- **Task:** Instead of opening files yourself, send a subagent to dig through `juice-shop/`
+  and report back a short answer.
+- **Try:** `Use a subagent to find which files under juice-shop/routes handle authentication,
+  and which one looks riskiest. Report back just a short summary.`
+- **Hint:** Phrase it as *"use a subagent to investigate X and report back."* The win is what
+  does **not** end up in your main context — notice how little came back versus how much it read.
+- **Bonus:** Fan out parallel subagents across several leads at once.
+- **Done when:** a subagent did the digging and only its summary came back to you.
 
 ### Card 3 — Build a Skill · *Intermediate · skills*
-- **Task:** Create a reusable **Skill** that gives a **customer-ready summary** of any
-  code file (what it does, why it matters, security implications). Test it on 2–3 files.
-- **Hint:** Save your best prompt as a Skill — a folder `.claude/skills/<name>/SKILL.md`
-  with a short `description` in the frontmatter. To test it without leaving your open
-  session, just **ask the AI to run your skill** (e.g. "use the customer-summary skill
-  on `src/auth.py`"). Typing `/<name>` works too — both are valid; a freshly created
-  skill may only show up as `/<name>` after the session reloads, but asking for it by
-  name works right away. Write it once, reuse forever.
+- **The idea:** save your best prompt once as a **Skill** and reuse it forever.
+- **Task:** Fill in the starter Skill at `.claude/skills/customer-summary/SKILL.md` (created
+  in Step 1) so it gives a **customer-ready summary** of *any* code file — what it does, why it
+  matters, security implications. Then test it on 2–3 different files.
+- **How to run it** (any of these — pick one):
+  - ask in plain English: `use the customer-summary skill on juice-shop/routes/login.ts`
+  - or type the command: `/customer-summary juice-shop/routes/login.ts`
+  - with the bonus audience arg: `/customer-summary juice-shop/routes/login.ts executive`
+  - *(A brand-new skill may only show up as `/name` after the session reloads — asking for it
+    by name works right away.)*
+- **Hint:** Keep the prompt general so it works on **any** file, not just the one you tested.
 - **Bonus:** Make it take an **audience** parameter (technical vs. executive).
-- **Done when:** it runs cleanly on a file you didn't build it for. *(Submit this.)*
+- **Done when:** it runs cleanly on a file you didn't build it for. *(Lives at
+  `.claude/skills/customer-summary/SKILL.md` — auto-collected.)*
 
 ### Card 4 — Talk to Wiz · *Advanced · MCP*
-- **Task:** Use the **Wiz MCP** to pull live data — e.g. recent critical issues or your
-  security score. Getting real data back is the whole win.
-- **Hint:** The Wiz tools (`mcp__wiz__*`) are already wired up. Just ask for the data;
-  the AI makes the call for you.
-- **Bonus:** Hand the results to a subagent for analysis, then wrap the flow in a skill.
-- **Done when:** live Wiz data lands in your session. **Write it up and save it as
-  `insight.md`** in your project folder so it's auto-collected at submit time.
+- **The idea:** the AI can call the **Wiz API** directly through MCP — no console, no copy-paste.
+- **Task:** Use the Wiz MCP to pull live data, then write the customer takeaway from it.
+- **Try:** `Use the Wiz MCP to list my open critical issues.` (or `…get my security score.`)
+- **Hint:** The Wiz tools (`mcp__wiz__*`) are already wired up — just ask for the data in plain
+  English and the AI makes the call. If it errors, your MCP isn't connected (see Pre-flight).
+- **Bonus:** Hand the results to a subagent for analysis, then wrap the whole flow in a skill.
+- **Done when:** live Wiz data came back and you've written the takeaway in **`insight.md`**
+  (auto-collected).
 
 ### Card 5 — Security Review Showdown · *Advanced · everything*
-- **Task:** Point an AI security review at **OWASP Juice Shop** (cloned to `./juice-shop`
-  in Step 1). Run a quick baseline, then **beat it**: sharper prompts, better context,
-  subagents per area. Compare findings.
-- **Hint:** Juice Shop is "obvious" on purpose — the variable is *you*. Try route-by-route
-  subagents and feeding only the relevant files. Same tool, different results.
+- **The idea:** same tool, same app — **better prompting and context find more.** Prove it.
+- **Task:** Run an AI security review on the cloned `juice-shop/`. Do a quick **baseline**,
+  then a sharper **second pass**, and compare what each found.
+- **Try (baseline):** `Review juice-shop for security vulnerabilities.`
+  **Then beat it:** `Review juice-shop/routes file by file using subagents; for each, name the
+  vulnerability class and a severity.`
+- **Hint:** Juice Shop is deliberately "obvious" — the variable is *you*. Tighter context and
+  per-area subagents surface bugs the lazy pass misses.
 - **Bonus:** Turn your best approach into a reusable `/security-review` skill.
-- **Done when:** you can show two runs and explain why one found more. **Save your
-  findings as `findings.md`** in your project folder so it's auto-collected.
+- **Done when:** two runs done, you can explain why one found more, written up in
+  **`findings.md`** (auto-collected).
 
 ### Card 6 — Vibe-Code a Site · *Creative · design*
-- **Task:** Build a single-page site (a vuln dashboard or "security posture" page) by
-  **conversation** — not a template.
-- **Hint:** Describe the *vibe*, not the CSS. Then refine: "make it darker, add a Wiz-style
-  hero, tighten the spacing." Feed it real Wiz MCP data for bonus realism.
+- **The idea:** build a UI by **conversation** — describe what you want and iterate, no
+  hand-written CSS.
+- **Task:** Turn the starter `site/index.html` (from Step 1) into a one-page security dashboard
+  or "posture" page.
+- **Try:** `Build a dark security-posture dashboard in site/index.html showing critical / high /
+  medium issue counts.` Then refine: `make it darker, add a hero header, tighten the spacing.`
+- **Hint:** Describe the *vibe*, not the CSS — then keep nudging. Feed it real Wiz MCP data
+  (Card 4) for bonus realism.
 - **Bonus:** Theme it for a specific customer.
-- **Done when:** a styled page renders in the browser. **Save it as `site/index.html`**
-  in your project folder so it's auto-collected.
+- **Done when:** a styled page renders in the browser, saved as **`site/index.html`**
+  (auto-collected).
 
 ### Bonus Card — Prompt Golf · *Anyone · efficiency*
 - **Task:** A *Wizard of Oz* phrase is scattered one word per file across a fake
