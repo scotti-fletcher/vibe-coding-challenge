@@ -205,10 +205,10 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   standalone **Tie-break Champion** award. *(Submit this.)*
 
 ### Bonus Card — Spinner Customization · *Anyone · configuration*
-- **Task:** Find out how to customize the "verb spinners" (the thinking/analyzing phrases that cycle in the terminal) in Claude Code.
+- **Task:** Have you noticed any **Wiz-specific verbs** (like *wizifying*, *securing*, *scanning*) cycling in the terminal spinner while Claude is thinking? Your environment has been pre-configured with a custom Wiz theme! Find out how this was done and how to customize the "verb spinners" in Claude Code.
 - **Try:** Ask Claude: *"How do I customize the verb spinners in Claude Code? What is the JSON config and where does it go?"*
 - **Hint:** Look for the global settings file path. The configuration uses the `spinnerVerbs` key.
-- **Done when:** You have written the JSON configuration structure and the correct global file path in **`findings.md`** under the `## Bonus: Claude Code Customization` section (scaffolded in Step 1).
+- **Done when:** You have written the JSON configuration structure, the correct global file path, and listed at least 3 of the pre-added Wiz verbs you observed in **`findings.md`** under the `## Bonus: Claude Code Customization` section (scaffolded in Step 1).
 
 ## Step 4 — Submitting
 
@@ -246,6 +246,7 @@ context lean? That's what counts. Awards run alongside the total: **Most Efficie
 - Offer the next card when they finish one; don't front-load everything.
 - Give a Hint only after an honest attempt or on request.
 - If they're stuck on setup, unblock fast; if they're flying, point them at the bonuses.
+- **The Spinner Nudge:** During Card 5 (when they are running subagents and watching the status spinners), proactively ask the user: *"Hey, have you noticed anything unique or Wiz-themed about the thinking verbs cycling at the bottom of your terminal?"* Encourage them to check out the **Spinner Customization Bonus Card** to learn how it was done!
 
 ## The Easter Egg (Cloud Run Deployment)
 
