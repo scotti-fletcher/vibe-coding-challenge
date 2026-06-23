@@ -96,15 +96,14 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 - **Task:** We suspect there might be a vulnerability in how coupons are validated or how
   users log in. Pick **one** specific source file in `juice-shop/routes/` (for example,
   `coupon.ts` or `login.ts`) and ask the AI to find bugs in *just that file*.
-  Then, ask the same question about the *whole project* and compare speed, focus, and
-  how much context each used.
+  Then, ask a broad question about **all the routes at once** in this chat and compare speed,
+  token usage, and how deep/accurate the findings are.
 - **Try:** `Is the logic in juice-shop/routes/login.ts safe? Look only at this file.`
-  …then later: `Find security bugs across this whole project.`
-- **Hint:** Name the exact file path. Narrow context beats more context — don't make the AI
-  read the repo to answer a one-file question.
+  …then later: `Review every single file in juice-shop/routes/ for security bugs at the same time in this chat.`
+- **Hint:** Name the exact file path. Narrow context beats more context — asking the AI to read an entire directory at once bloats the context window, slows down the response, and often leads to a shallow, "lazy" review that misses critical bugs.
 - **Bonus:** Add a `CLAUDE.md` so the AI understands the project without you re-explaining.
 - **Done when:** you've reviewed one specific file and can say how that differed from asking
-  about the whole repo.
+  about all routes at once.
 
 ### Card 2 — Scout, Don't Stuff · *Intermediate · subagents*
 - **The idea:** delegate the noisy searching to a **subagent** so only its summary lands in
