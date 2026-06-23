@@ -209,6 +209,20 @@ def main():
             print(f"  {status}")
         print("  (open a new terminal — or just submit via Claude — to pick it up)")
 
+    # Configure default gcloud Cloud Run region to prevent AI from guessing/prompting US regions
+    try:
+        import subprocess
+        print("\n🔧 Configuring gcloud environment...")
+        subprocess.run(
+            ["gcloud", "config", "set", "run/region", "australia-southeast1"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True
+        )
+        print("  set      default Cloud Run region to australia-southeast1")
+    except Exception as e:
+        print(f"  warning  failed to set default Cloud Run region: {e}")
+
     if skipped and not args.force:
         print("\nExisting files were left untouched. Re-run with --force to reset them.")
 
