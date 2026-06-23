@@ -109,9 +109,12 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 - **The idea:** delegate the noisy searching to a **subagent** so only its summary lands in
   your main chat — your context stays clean for the real work.
 - **Task:** Instead of opening files yourself, send a subagent to dig through `juice-shop/`
-  and report back a short answer. *(Note: You can trigger subagents in plain English, or use the `/agents` command to view and manage them).*
-- **Try:** `Use a subagent to find which files under juice-shop/routes handle authentication,
-  and which one looks riskiest. Report back just a short summary.`
+  and report back a short answer.
+- **Two Ways to Create a Subagent:**
+  1. **Dynamic (One-off):** Just ask in plain English! Claude will automatically spawn a temporary subagent in the background.
+     - **Try:** `Use a subagent to find which files under juice-shop/routes handle authentication, and which one looks riskiest. Report back just a short summary.`
+  2. **Persistent (Custom Agent):** Run the **`/agents`** command to open the interactive dashboard. Go to the **Library** tab, select **New Agent**, and configure a persistent agent named `scout` with the prompt: *"You are a code scout. Search the repository and return concise file summaries."*
+     - **Try:** Once saved, invoke it directly: `/scout find which files under juice-shop/routes handle authentication, and which one looks riskiest. Report back just a short summary.`
 - **Hint:** Phrase it as *"use a subagent to investigate X and report back."* The win is what
   does **not** end up in your main context — notice how little came back versus how much it read.
 - **Bonus:** Fan out parallel subagents across several leads at once.
