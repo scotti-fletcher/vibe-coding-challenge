@@ -170,9 +170,9 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   vulnerability class and a severity.`
 - **Hint:** Juice Shop is deliberately "obvious" — the variable is *you*. Tighter context and
   per-area subagents surface bugs the lazy pass misses.
-- **Proper Subagent Use & Monitoring (The "Fan-Out" Pattern):**
+- **Proper Subagent Use (The "Fan-Out" Pattern):**
   *   **The Concept (Modular Delegation):** Don't just spawn a single subagent for the whole folder—that just moves the context bloat. Instead, tell the main agent to **fan out** focused subagents for individual files (or small groups of 2-3 files) to perform deep, isolated reviews.
-  *   **The Tool (`/agents`):** Once the main agent starts fanning out, **run the `/agents` command** in your terminal. This opens the interactive subagent dashboard where you can watch the parallel subagents work in real-time, click through their active tabs, and monitor their progress concurrently.
+  *   **Watching them work (The Status Spinners):** Because Claude Code is turn-based, your input is blocked while the agent runs. You won't see these temporary subagents in the `/agents` dashboard because they finish and close before the turn ends. Instead, **watch the status bar at the very bottom of your terminal**—you will see the parallel subagents (like `[Scout]`) spinning and thinking concurrently in real-time!
   *   **Aggregate:** Have the main agent collect these focused summaries and compile them into your final report.
 - **Bonus:** Turn your best approach into a reusable `/security-review` skill.
 - **Done when:** two runs done, you can explain why one found more, written up in
