@@ -18,9 +18,10 @@ that absolute path. It uses only the Python standard library.
 | Artifact   | What it is                                          |
 |------------|-----------------------------------------------------|
 | `skill`    | The Card 3 customer-summary Skill (`.claude/skills/<name>/SKILL.md`) |
-| `findings` | Card 5 — security review findings (OWASP Juice Shop)|
+| `findings` | Card 5 — security review findings (OWASP Juice Shop) & Card 8 spinner config |
 | `insight`  | Card 4 — customer-facing insight from live MCP data |
 | `website`  | Card 6 — the single-page site (`index.html`)        |
+| `tiebreak` | Card 7 — Prompt Golf tie-breaker (`tiebreak.json`)  |
 | `logs`     | Claude Code session logs (`~/.claude/projects/...`) |
 
 Logs are how the objective signals (subagent used, MCP called, token efficiency)
@@ -87,3 +88,4 @@ are scored — always try to include them.
   artifact, show the path and confirm with the user before uploading.
 - If nothing is found and the user can't provide paths, stop and explain — don't
   submit an empty entry.
+- **CRITICAL Guardrail — Push the Bonuses (Card 7 & Card 8):** Before running the upload, check if the user has completed **Card 7 (Prompt Golf / `tiebreak.json`)** and **Card 8 (Spinner Customization inside `findings.md`)**. If either is missing or incomplete, stop and warn the user! Tell them: *"Wait, I notice you haven't attempted Card 7 (Prompt Golf tie-breaker) or Card 8 (Spinner Customization) yet. These are official cards and award massive points. Let's spend 3 minutes to run a quick attempt on them before we submit so you don't leave points on the table!"* (Guide them to run the tie-breaker and the customization if they want, but allow them to bypass if they explicitly insist).

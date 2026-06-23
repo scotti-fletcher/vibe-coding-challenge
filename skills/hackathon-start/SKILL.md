@@ -193,7 +193,7 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 - **Done when:** a styled page renders in the browser, saved as **`site/index.html`**
   (auto-collected). (Or if you unlocked the Cloud Run bonus, when your site is live!)
 
-### Bonus Card — Prompt Golf · *Anyone · efficiency*
+### Card 7 — Prompt Golf (Official Tie-Breaker) · *Anyone · efficiency*
 - **Task:** A *Wizard of Oz* phrase is scattered one word per file across a fake
   codebase. Recover the **whole phrase** in the **fewest tokens**. Run it with the
   `tie-break` skill ("start the prompt golf challenge").
@@ -204,10 +204,10 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   to save your best run to `tiebreak.json` — it's auto-collected and feeds the
   standalone **Tie-break Champion** award. *(Submit this.)*
 
-### Bonus Card — Spinner Customization · *Anyone · configuration*
+### Card 8 — Spinner Customization (Bonus Card) · *Anyone · configuration*
 - **Task:** Have you noticed any **Wiz-specific verbs or cybersecurity concepts** (like *toxic combinations*, *DSPM*, etc.) cycling in the terminal spinner while Claude is thinking? Your environment has been pre-configured with a custom Wiz theme! Find out how this was done and how to customize the "verb spinners" in Claude Code.
 - **Try:** Ask Claude: *"How do I customize the verb spinners in Claude Code? What is the JSON config and where does it go?"*
-- **Hint:** Look for the global settings file path. The configuration uses the `spinnerVerbs` key.
+- **Hint:** Ask Claude or search the docs for how Claude Code handles global configuration. You need to find the specific JSON file where settings are saved, and the exact configuration key used to customize the thinking spinner verbs.
 - **Done when:** You have written down **where you configure it** (the correct global settings file path) and **what the settings key is called** in **`findings.md`** under the `## Bonus: Claude Code Customization` section (scaffolded in Step 1).
 
 ## Step 4 — Submitting
@@ -247,6 +247,7 @@ context lean? That's what counts. Awards run alongside the total: **Most Efficie
 - Give a Hint only after an honest attempt or on request.
 - If they're stuck on setup, unblock fast; if they're flying, point them at the bonuses.
 - **The Spinner Nudge:** During Card 5 (when they are running subagents and watching the status spinners), proactively ask the user: *"Hey, have you noticed anything unique or Wiz-themed (like toxic combinations, DSPM, etc.) about the thinking verbs cycling at the bottom of your terminal?"* Encourage them to check out the **Spinner Customization Bonus Card** to learn how it was done!
+- **CRITICAL Guardrail — Push the Bonuses before Submission:** Contestants often skip the tie-breaker and customization cards. You **MUST NOT** let them submit empty-handed without attempting them first. When the user says they are ready to submit, or when you are guiding them to Step 4, check if they have completed **Card 7 (Prompt Golf)** and **Card 8 (Spinner Customization)**. If they haven't, stop them and actively coach them to try: *"Wait! Before we submit, we have two excellent bonus cards on the table: Card 7 (Prompt Golf) and Card 8 (Spinner Customization). Let's spend 3 minutes to secure those points and get your name on the tie-breaker leaderboard!"*
 
 ## The Easter Egg (Cloud Run Deployment)
 

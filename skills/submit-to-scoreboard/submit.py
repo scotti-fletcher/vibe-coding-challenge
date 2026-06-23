@@ -223,6 +223,40 @@ def main():
         "server_response": msg,
     }
     print(json.dumps(summary, indent=2))
+
+    # Proactive warnings to prevent skipping Card 7 and Card 8
+    warnings = []
+    if "tiebreak" in result["missing"]:
+        warnings.append(
+            "⚠️  WARNING: No tie-breaker score found (tiebreak.json is missing)!\n"
+            "   Card 7 (Prompt Golf) is an official card and serves as the tie-breaker.\n"
+            "   To compete for the standalone 'Tie-break Champion' trophy, run at least one\n"
+            "   attempt and submit again. It only takes a minute!\n"
+            "   Run:  python3 skills/tie-break/score.py --answer \"your recovered phrase\""
+        )
+
+    findings_path = result["found"].get("findings")
+    spinner_solved = False
+    if findings_path:
+        try:
+            content = Path(findings_path).read_text(errors="ignore").lower()
+            if "spinnerverbs" in content:
+                spinner_solved = True
+        except Exception:
+            pass
+    if not spinner_solved:
+        warnings.append(
+            "⚠️  WARNING: Card 8 (Spinner Customization) is incomplete!\n"
+            "   There is a +5 point bonus waiting for you on the scoreboard.\n"
+            "   Research where Claude Code's thinking verb spinners are configured, write\n"
+            "   the file path and settings key in findings.md under the Bonus section, and re-submit!"
+        )
+
+    if warnings:
+        print("\n" + "="*75)
+        print("\n\n".join(warnings))
+        print("="*75 + "\n")
+
     return 0 if status in (200, 302) else 1
 
 
