@@ -80,9 +80,9 @@ _The one-line takeaway._
 _Why did one run find more than the other?_
 
 ## Bonus: Claude Code Customization
-<!-- Answer the bonus question here:
-     1. How do you customize the "verb spinners" in Claude Code? (Show the JSON config)
-     2. In which file path is this configured globally?
+<!-- Answer the bonus questions here:
+     1. Where do you configure the custom "verb spinners" globally? (Show the settings file path)
+     2. What is the configuration key called? (Name the key)
 -->
 -
 """,
