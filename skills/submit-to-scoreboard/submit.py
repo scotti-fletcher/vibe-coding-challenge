@@ -10,7 +10,7 @@ Usage:
 
 Config via env (handy when baked into a workstation image):
     TEAM_NAME        default team name
-    SCOREBOARD_URL   default server, e.g. https://scoreboard.internal  (default http://localhost:5000)
+    SCOREBOARD_URL   default server, e.g. https://scoreboard.internal  (default https://scoreboard-service-971046046859.australia-southeast1.run.app/)
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ import sys
 import uuid
 from pathlib import Path
 
-DEFAULT_SERVER = os.environ.get("SCOREBOARD_URL", "http://localhost:5000")
+DEFAULT_SERVER = os.environ.get("SCOREBOARD_URL", "https://scoreboard-service-971046046859.australia-southeast1.run.app/")
 PRUNE_DIRS = {".git", "node_modules", ".venv", "venv", "dist", "build",
               "__pycache__", ".next", ".cache", "site-packages"}
 MAX_LOGS = 5  # most-recent session logs to send

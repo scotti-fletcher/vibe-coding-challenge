@@ -93,9 +93,11 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 ### Card 1 — Context is King · *Beginner · context windows*
 - **The idea:** *what* you put in the context window matters more than *how much*. Point the
   AI at the one file that matters instead of the whole repo.
-- **Task:** Pick **one** source file in `juice-shop/` and ask the AI about *just that file*.
-  Then ask the same kind of question about the *whole project* and compare speed, focus, and
-  how much context each used. (See candidate files with `ls juice-shop/routes`.)
+- **Task:** We suspect there might be a vulnerability in how coupons are validated or how
+  users log in. Pick **one** specific source file in `juice-shop/routes/` (for example,
+  `coupon.ts` or `login.ts`) and ask the AI to find bugs in *just that file*.
+  Then, ask the same question about the *whole project* and compare speed, focus, and
+  how much context each used.
 - **Try:** `Is the logic in juice-shop/routes/login.ts safe? Look only at this file.`
   …then later: `Find security bugs across this whole project.`
 - **Hint:** Name the exact file path. Narrow context beats more context — don't make the AI
@@ -113,14 +115,18 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   and which one looks riskiest. Report back just a short summary.`
 - **Hint:** Phrase it as *"use a subagent to investigate X and report back."* The win is what
   does **not** end up in your main context — notice how little came back versus how much it read.
+- **Note on Claude Code:** You can trigger subagents using natural language (like the Try prompt
+  above) or manage them manually using the `/agents` slash command.
 - **Bonus:** Fan out parallel subagents across several leads at once.
 - **Done when:** a subagent did the digging and only its summary came back to you.
 
 ### Card 3 — Build a Skill · *Intermediate · skills*
 - **The idea:** save your best prompt once as a **Skill** and reuse it forever.
-- **Task:** Fill in the starter Skill at `.claude/skills/customer-summary/SKILL.md` (created
-  in Step 1) so it gives a **customer-ready summary** of *any* code file — what it does, why it
-  matters, security implications. Then test it on 2–3 different files.
+- **Task:** We've scaffolded a basic starter Skill for you at
+  `.claude/skills/customer-summary/SKILL.md`. It technically works, but it's very naive.
+  Your task is to **improve it** so it gives a high-quality, **customer-ready summary** of
+  *any* code file — explaining what it does, why it matters, and its security implications.
+  Then test your improved skill on 2–3 different files.
 - **How to run it** (any of these — pick one):
   - ask in plain English: `use the customer-summary skill on juice-shop/routes/login.ts`
   - or type the command: `/customer-summary juice-shop/routes/login.ts`
@@ -128,6 +134,7 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   - *(A brand-new skill may only show up as `/name` after the session reloads — asking for it
     by name works right away.)*
 - **Hint:** Keep the prompt general so it works on **any** file, not just the one you tested.
+  Look at the comments in the scaffolded `SKILL.md` for tips on what to add.
 - **Bonus:** Make it take an **audience** parameter (technical vs. executive).
 - **Done when:** it runs cleanly on a file you didn't build it for. *(Lives at
   `.claude/skills/customer-summary/SKILL.md` — auto-collected.)*
@@ -164,9 +171,9 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   medium issue counts.` Then refine: `make it darker, add a hero header, tighten the spacing.`
 - **Hint:** Describe the *vibe*, not the CSS — then keep nudging. Feed it real Wiz MCP data
   (Card 4) for bonus realism.
-- **Bonus:** Theme it for a specific customer.
+- **Bonus:** Theme it for a specific customer. *Super Bonus:* If you discover a way to deploy to the cloud from your workstation, deploy your dashboard to a live URL!
 - **Done when:** a styled page renders in the browser, saved as **`site/index.html`**
-  (auto-collected).
+  (auto-collected). (Or if you unlocked the Cloud Run bonus, when your site is live!)
 
 ### Bonus Card — Prompt Golf · *Anyone · efficiency*
 - **Task:** A *Wizard of Oz* phrase is scattered one word per file across a fake
@@ -215,3 +222,16 @@ context lean? That's what counts. Awards run alongside the total: **Most Efficie
 - Offer the next card when they finish one; don't front-load everything.
 - Give a Hint only after an honest attempt or on request.
 - If they're stuck on setup, unblock fast; if they're flying, point them at the bonuses.
+
+## The Easter Egg (Cloud Run Deployment)
+
+There is a hidden easter egg on the workstation at `~/secrets/cloud/deployment/configs/hints/bonus/cloud-run-secret.txt`.
+- **How they discover it:** There is nothing explicitly telling them to look there. They might notice `~/secrets` if they run `ls ~` or explore their home directory.
+- **Your role as Guide:**
+  - If they notice `~/secrets/` or ask about it, **do not** search it for them. Coach them to use a subagent to search it efficiently (e.g., using a targeted grep like `grep -r "easter\\|secret\\|cloud.run\\|deploy" ~/secrets/`) to save context tokens. Explain that reading all files in that tree costs ~2,000 tokens, while a smart search costs ~50.
+  - If they are doing well and you want to nudge them during Card 6, you can drop a subtle hint: *"I wonder if there are any interesting secrets in your home directory that could take your website to the next level?"*
+  - Once they find the secret, **Card 6 is upgraded/replaced**: instead of just building a local `site/index.html`, they should deploy it to Cloud Run using the workstation's service account.
+  - Guide them to run the deployment command (or help them do it if they ask):
+    `gcloud run deploy my-site --source . --region us-central1 --allow-unauthenticated`
+  - Encourage them to wire in live Wiz MCP data (Card 4) before deploying for maximum impact.
+  - The goal is to show the judges a **live URL** instead of just a local file.

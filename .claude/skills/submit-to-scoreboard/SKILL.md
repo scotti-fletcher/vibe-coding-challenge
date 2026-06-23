@@ -71,7 +71,7 @@ are scored — always try to include them.
 
 ## Configuration
 
-- Server URL comes from `SCOREBOARD_URL` (default `http://localhost:5000`). The
+- Server URL comes from `SCOREBOARD_URL` (default `https://scoreboard-service-971046046859.australia-southeast1.run.app/`). The
   facilitator sets this to the live scoreboard URL on team workstations before
   the lab starts, so the skill "just works". If the upload fails with a
   connection error, the env var is likely unset or stale — confirm the current
