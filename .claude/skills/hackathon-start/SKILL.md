@@ -171,7 +171,8 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 - **Hint:** Juice Shop is deliberately "obvious" — the variable is *you*. Tighter context and
   per-area subagents surface bugs the lazy pass misses.
 - **Proper Subagent Use (The "Fan-Out" Pattern):**
-  *   **The Concept (Modular Delegation):** Don't just spawn a single subagent for the whole folder—that just moves the context bloat. Instead, tell the main agent to **fan out** focused subagents for individual files (or small groups of 2-3 files) to perform deep, isolated reviews.
+  *   **The Concept (Modular Delegation):** Don't just spawn a single subagent for the whole folder—that just moves the context bloat. Instead, tell the main agent to **fan out** focused subagents to perform deep, isolated reviews.
+  *   **CRITICAL: The "Rule of 3" (Rate Limit Guardrail):** **Do NOT spawn 10-20 subagents at once** (e.g., one per file). Spawning too many concurrent sessions will immediately trigger API **rate limits** (burst limits) and slow your execution to a crawl due to exponential backoff retries. Instead, group your files logically (e.g., group the 15 routes into 3 buckets: Auth, Transactions, and Admin) and spawn **only 2–3 subagents in parallel**. This maximizes speed, avoids rate limits entirely, and keeps your orchestration token overhead low.
   *   **Watching them work (The Status Spinners):** Because Claude Code is turn-based, your input is blocked while the agent runs. You won't see these temporary subagents in the `/agents` dashboard because they finish and close before the turn ends. Instead, **watch the status bar at the very bottom of your terminal**—you will see the parallel subagents (like `[Scout]`) spinning and thinking concurrently in real-time!
   *   **Aggregate:** Have the main agent collect these focused summaries and compile them into your final report.
 - **Bonus:** Turn your best approach into a reusable `/security-review` skill.
