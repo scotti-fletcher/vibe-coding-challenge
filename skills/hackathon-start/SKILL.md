@@ -188,6 +188,7 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 - **Hint:** Describe the *vibe*, not the CSS — then keep nudging. Feed it real Wiz MCP data
   (Card 4) for bonus realism.
 - **Bonus:** Theme it for a specific customer. *Super Bonus:* If you discover a way to deploy to the cloud from your workstation, deploy your dashboard to a live URL!
+- **Judges Love Vibe:** **Creative, highly polished, and visually stunning frontend designs win massive extra points!** The judges are looking for visual flair, a cohesive cyber-security theme, responsive grids, and clean CSS transitions. Don't settle for a basic table—vibe-code a dashboard you'd be proud to show a CISO!
 - **Done when:** a styled page renders in the browser, saved as **`site/index.html`**
   (auto-collected). (Or if you unlocked the Cloud Run bonus, when your site is live!)
 
