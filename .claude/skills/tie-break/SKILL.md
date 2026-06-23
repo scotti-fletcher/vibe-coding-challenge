@@ -43,12 +43,21 @@ Tell the player the rules, then **let them drive**:
 > 2. **Fewest tokens wins.** Push the work to the shell; keep context lean.
 > 3. **Unlimited attempts.** Refine your prompt, `/clear`, try again — only your
 >    best correct run is kept.
-> 4. The phrase is a *Wizard of Oz* line, one word per file under
->    `tie-break-vault/`, behind the marker `OZFLAG:<index>:<word>`. Decoys wear a
->    different marker to punish loose patterns. Order by index.
+> 4. **How the flag is laid out.** Every file under `tie-break-vault/` hides one
+>    line shaped like `OZFLAG:3:attention`:
+>    - `OZFLAG` — the real marker; grab **only** lines with this exact prefix.
+>    - `3` — the word's position in the phrase.
+>    - `attention` — the actual word.
+>
+>    Some files also carry **decoy** lines under a *different* marker (e.g.
+>    `DECOY:3:bears`). A too-loose search will scoop these up and corrupt your
+>    answer — match the `OZFLAG` prefix precisely. Then collect every `OZFLAG`
+>    line, **sort numerically by the middle number** (1, 2, 3 … not
+>    alphabetically), and join the words in that order — that's the phrase.
 
-The elegant solutions are usually one `grep | sort | join` pipeline — but
-discovering that is *their* job, not yours.
+Spell that layout out for the player up front — don't make them ask. The elegant
+solutions are usually one `grep | sort | join` pipeline, but discovering *that
+pipeline* is their job, not yours.
 
 ## Step 3 — Score each attempt (keeps your best)
 
