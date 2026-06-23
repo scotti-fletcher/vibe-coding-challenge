@@ -24,7 +24,7 @@ Run the planter as a black box from the skill directory (it prints a count, neve
 the phrase):
 
 ```bash
-python <skill-dir>/planter.py --dir "$(pwd)" --quiet
+python3 skills/tie-break/planter.py --dir "$(pwd)" --quiet
 ```
 
 - Default phrase id is `0`; everyone should use the **same** `--phrase-id` for a fair race.
@@ -65,8 +65,8 @@ After **each** attempt, in a **separate terminal** (so scoring doesn't add token
 to the attempt you're measuring):
 
 ```bash
-python <skill-dir>/verify.py "<your recovered phrase>"             # quick PASS/FAIL (+ reveals the reference solution)
-python <skill-dir>/score.py --answer "<your recovered phrase>"     # scores it and keeps your best in tiebreak.json
+python3 skills/tie-break/verify.py "<your recovered phrase>"             # quick PASS/FAIL (+ reveals the reference solution)
+python3 skills/tie-break/score.py --answer "<your recovered phrase>"     # scores it and keeps your best in tiebreak.json
 ```
 
 `score.py --answer` reports the attempt's **new-token** cost and updates
