@@ -124,6 +124,18 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   Your task is to **improve it** so it gives a high-quality, **customer-ready summary** of
   *any* code file — explaining what it does, why it matters, and its security implications.
   Then test your improved skill on 2–3 different files.
+
+- **Understanding the Skill Format:**
+  A skill file is a simple Markdown document with two parts:
+  1. **YAML Frontmatter (Top):** Enclosed in `---`. It defines the `name` (the slash command, e.g. `/customer-summary`) and a `description` (which tells Claude *when* to automatically run this skill in natural language).
+  2. **Markdown Body (Instructions):** This is the "prompt engineering" part. It acts as the system prompt for the skill, telling Claude exactly how to behave, what tools to use, and how to format the output.
+
+- **How to Improve Your Skill (Tips):**
+  *   **Arg Handling:** Instruct Claude to accept arguments. For example: *"The first argument is the file path. Read this file first. The second argument is the optional audience (technical or executive)."*
+  *   **Audience Tuning:** Tell Claude how to adapt its tone. If the audience is `executive`, avoid code snippets and focus on business risk. If `technical`, explain the code structure and specific libraries used.
+  *   **Security Depth:** Instruct Claude to analyze the code for common vulnerabilities (like SQL injection or broken auth) and explain the risk clearly.
+  *   **Output Structure:** Define a clean markdown output template (e.g., using sections like `## Executive Summary`, `## Security Analysis`, `## Recommended Actions`).
+
 - **How to run it** (any of these — pick one):
   - ask in plain English: `use the customer-summary skill on juice-shop/routes/login.ts`
   - or type the command: `/customer-summary juice-shop/routes/login.ts`
