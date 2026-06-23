@@ -110,13 +110,11 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
 - **The idea:** delegate the noisy searching to a **subagent** so only its summary lands in
   your main chat — your context stays clean for the real work.
 - **Task:** Instead of opening files yourself, send a subagent to dig through `juice-shop/`
-  and report back a short answer.
+  and report back a short answer. *(Note: You can trigger subagents in plain English, or use the `/agents` command to view and manage them).*
 - **Try:** `Use a subagent to find which files under juice-shop/routes handle authentication,
   and which one looks riskiest. Report back just a short summary.`
 - **Hint:** Phrase it as *"use a subagent to investigate X and report back."* The win is what
   does **not** end up in your main context — notice how little came back versus how much it read.
-- **Note on Claude Code:** You can trigger subagents using natural language (like the Try prompt
-  above) or manage them manually using the `/agents` slash command.
 - **Bonus:** Fan out parallel subagents across several leads at once.
 - **Done when:** a subagent did the digging and only its summary came back to you.
 
