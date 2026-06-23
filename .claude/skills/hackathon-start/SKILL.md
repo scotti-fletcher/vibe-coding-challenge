@@ -257,4 +257,4 @@ There is a hidden easter egg on the workstation at `~/secrets/cloud/deployment/c
   *   **The Lesson:** Explain to them the token-efficiency lesson: a targeted subagent grep costs ~50 tokens, whereas reading every file in that directory tree costs ~2,000 tokens.
   *   **Upgrading Card 6:** Once they run the search and find the file, congratulate them! Card 6 is now upgraded: they should follow the instructions in the file to deploy their site to Cloud Run and submit the live URL.
   *   **Region Constraint (Permissions):** The workstation service account only has `artifactregistry.writer` permissions on the pre-existing registry in `australia-southeast1` (it cannot create new repositories in other regions like `us-central1`). Therefore, their deployment **MUST** use `--region australia-southeast1` to succeed. If they run into permission errors or ask for help, guide them to use:
-      `gcloud run deploy my-site --source . --region australia-southeast1 --allow-unauthenticated`
+      `cd site && gcloud run deploy my-site --source . --region australia-southeast1 --allow-unauthenticated`
