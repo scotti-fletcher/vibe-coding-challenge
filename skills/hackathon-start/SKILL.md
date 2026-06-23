@@ -195,6 +195,12 @@ code you cloned in Step 1**, so `cd` into your project folder and you're ready. 
   to save your best run to `tiebreak.json` — it's auto-collected and feeds the
   standalone **Tie-break Champion** award. *(Submit this.)*
 
+### Bonus Card — Spinner Customization · *Anyone · configuration*
+- **Task:** Find out how to customize the "verb spinners" (the thinking/analyzing phrases that cycle in the terminal) in Claude Code.
+- **Try:** Ask Claude: *"How do I customize the verb spinners in Claude Code? What is the JSON config and where does it go?"*
+- **Hint:** Look for the global settings file path. The configuration uses the `spinnerVerbs` key.
+- **Done when:** You have written the JSON configuration structure and the correct global file path in **`findings.md`** under the `## Bonus: Claude Code Customization` section (scaffolded in Step 1).
+
 ## Step 4 — Submitting
 
 When you've done what you can, submit. Just say **"submit my work"** — the

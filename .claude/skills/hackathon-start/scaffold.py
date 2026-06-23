@@ -78,6 +78,13 @@ _The one-line takeaway._
 
 ## What changed, and why
 _Why did one run find more than the other?_
+
+## Bonus: Claude Code Customization
+<!-- Answer the bonus question here:
+     1. How do you customize the "verb spinners" in Claude Code? (Show the JSON config)
+     2. In which file path is this configured globally?
+-->
+-
 """,
     "site/index.html": """\
 <!doctype html>
