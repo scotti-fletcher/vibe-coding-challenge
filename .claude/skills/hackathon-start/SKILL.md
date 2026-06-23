@@ -1,6 +1,75 @@
 ---
 name: hackathon-start
-description: Onboard a participant to the Wiz SE AI CLI hackathon. Run a quick environment pre-flight (CLI + Wiz MCP), then walk the six challenge cards with hints and "done looks like" criteria, and point to how to submit. Use when the user says "get started", "start the hackathon", "how do I begin", "what are the challenges", "give me the challenges", or similar.
+description: Onboard a participant to the Wiz SE AI CLI hackathon, or run a full facilitator test run. If run with the 'facilitator' or 'test' argument, switches to Facilitator Test Mode to help maintainers validate the entire end-to-end pipeline. Use when the user says "get started", "start the hackathon", "run facilitator test", "test the hackathon flow", or similar.
+---
+
+## 🛠️ Facilitator Test Mode (Maintainer Mode)
+
+If the first argument to this skill is `facilitator` or `test` (or if you are explicitly asked to perform a facilitator/maintainer test run), you must **instantly switch to Facilitator Test Mode**. 
+
+In this mode, the "golden rules" of coaching are suspended. Your job is to help the maintainer validate the entire end-to-end hackathon pipeline (scaffolding -> mock solutions -> Cloud Run deployment -> Prompt Golf -> submission -> scoring -> scoreboard report) in less than 5 minutes.
+
+Follow these steps to assist the maintainer:
+
+### Step 1: Scaffold the Workspace
+Ask them if they have run the onboarding scaffold. If not, tell them to run:
+```bash
+python3 skills/hackathon-start/scaffold.py
+```
+*(They can optionally provide a mock Team Name during onboarding, e.g., "test-team").*
+
+### Step 2: Generate Mock Solutions
+Offer to **automatically write high-quality mock files** to their respective locations so they have a complete set of artifacts to test. If they agree, write the following files (overwrite if forced):
+1.  **Card 3 (Skill):** `.claude/skills/customer-summary/SKILL.md` (write a simple valid skill).
+2.  **Card 4 (Insight):** `insight.md` (write a mock customer security readout).
+3.  **Card 5 (Findings) & Card 8 (Spinner Config):** `findings.md` (write a mock security review and include the correct answers for the custom verb spinners: `/usr/local/google/home/lucasjarman/.gemini/config/settings.json` or `~/.claude/settings.json` and the key `spinnerVerbs` to test the +5 bonus!).
+4.  **Card 6 (Website):** `site/index.html` (write a mock styled dashboard).
+
+### Step 3: Test the Cloud Run Deployment (Card 6 Super Bonus)
+Reveal the Easter Egg immediately:
+*   Tell them the Easter Egg file is at: `~/secrets/cloud/deployment/configs/hints/bonus/cloud-run-secret.txt`
+*   Provide the exact command to deploy the static dashboard to the pre-existing registry:
+    ```bash
+    cd site && gcloud run deploy test-site --source . --region australia-southeast1 --allow-unauthenticated
+    ```
+*   Have them verify that the service URL renders their mock dashboard successfully.
+
+### Step 4: Test the Prompt Golf (Card 7 Tie-Breaker)
+Explain how to run a mock tie-breaker attempt:
+1.  Seed the vault:
+    ```bash
+    python3 skills/tie-break/planter.py
+    ```
+2.  Reveal the reference solution phrase: **"pay no attention to the man behind the curtain"**
+3.  Write the score to `tiebreak.json` with a mock token count (e.g. 150 tokens) to test the efficiency scorer:
+    ```bash
+    python3 skills/tie-break/score.py --answer "pay no attention to the man behind the curtain"
+    ```
+
+### Step 5: Test the Submission Flow
+Tell them to run the submission script to upload the mock bundle to the live scoreboard:
+```bash
+python3 skills/submit-to-scoreboard/submit.py
+```
+*(Verify that it uploads successfully, detects the spinner bonus, and registers the tie-breaker).*
+
+### Step 6: Test the Scoring & Report Pipeline
+Guide them to run the scoring dry-run locally:
+1.  Download the zip bundle:
+    ```bash
+    curl -s -o /tmp/submissions.zip "https://scoreboard-service-971046046859.australia-southeast1.run.app/api/submissions.zip?token=hackathon-secret-2024"
+    ```
+2.  Extract and scan:
+    ```bash
+    unzip -o /tmp/submissions.zip -d /tmp/subs
+    python3 .claude/skills/score-hackathon/scan_signals.py /tmp/subs/submissions --out /tmp/signals.json
+    ```
+3.  Write a test `/tmp/judging.json` and compile the dashboard:
+    ```bash
+    python3 .claude/skills/score-hackathon/build_report.py --signals /tmp/signals.json --judging /tmp/judging.json --out ./results.html --title "SE Hackathon — Test Results"
+    ```
+4.  Open `results.html` in their browser to verify the scoreboard renders perfectly!
+
 ---
 
 # Wiz SE AI CLI Hackathon — Get Started
